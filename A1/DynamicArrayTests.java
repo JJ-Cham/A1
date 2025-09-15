@@ -204,7 +204,7 @@ public class DynamicArrayTests {
     }
 
     @Test 
-    public void testInsertArray()[
+    public void testInsertArray(){
         DynamicArray<String> arr1 = new DynamicArray<String>(2);
         arr1.add("hi");
         arr1.add("bye");
@@ -221,19 +221,66 @@ public class DynamicArrayTests {
 
     @Test 
     public void testSublist(){
-        DynamicArrayString>
+        DynamicArray<String> arr = new DynamicArray<>(5);
+        arr.add("csc");
+        arr.add("dept");
+        arr.add("is");
+        arr.add("cool");
 
+        DynamicArray<String> sub = arr.sublist(1,3);
+        assertEquals(2,sub.size());
+        assertEquals("dept", sub.get(0));
+        assertEquals("is", sub.get(1));
     }
 
+    @Test 
+    public void testDelete(){
+        DynamicArray<String> arr = new DynamicArray<>(5);
+        arr.add("csc");
+        arr.add("dept");
+        arr.add("is");
+        arr.add("cool");
+
+        arr.delete(1,3); // array is now [csc, cool]/ shoudl be
+        assertEquals(2,arr.size());
+        assertEquals("csc", arr.get(0));
+        assertEquals("cool", arr.get(1));
+    }
+
+    @Test 
+    public void testExtract(){
+        DynamicArray<String> arr = new DynamicArray<>(5);
+        arr.add("csc");
+        arr.add("dept");
+        arr.add("is");
+        arr.add("cool");
+
+        DynamicArray<String> ext = arr.extract(1,3); // array is now [dept, is]
+        assertEquals(2,ext.size());
+        assertEquals("dept", ext.get(0));
+        assertEquals("is", ext.get(1));
+        assertEquals(4, arr.size()); // original array should stay the same 
+    }
     
 
     //Group 4 tests
+
+    //attempting one test for all 3 methods since they are similar 
     @Test
-    public void testDelete(){
+    public void testIndexInfo(){
+        DynamicArray<String> arr = new DynamicArray<>(3);
+        arr.add(1);
+        arr.add(2);
+
+        assertEquals(0, arr.lowIndex());
+        assertEquals(1, arr.highIndex());
+        assertTrue(arr.indexInRange(1);
+        assertFalse(arr.indexInRange(2));
+    }
 
 
 
-}
+
 
 
 
