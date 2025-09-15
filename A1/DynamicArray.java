@@ -1,5 +1,7 @@
 
-
+/**
+ * A simple implementation of a dynamic array.
+ */
 public class DynamicArray<J> implements DynamicArrayADT<J> {
     private J[] data;
     private int size;
@@ -53,7 +55,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
      * Returns the element at the specified index.
      * @param index the index of the element to retrieve
      * @return the element at the specified index
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size)
+     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
      */
     @Override
     public J get(int index){
@@ -68,7 +70,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
      * @param index the index of the element to replace
      * @param value the new value to store
      * @return the previous value at the specified index
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size)
+     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
      */
     @Override
     public J set(int index, J value){
@@ -84,7 +86,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
      * Inserts the specified value at the given index, shifting subsequent elements to the right.
      * @param index the index at which to insert the value
      * @param value the value to insert
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index > size)
+     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
      */
     @Override 
     public void add(int index, J value){
@@ -118,7 +120,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
      * Removes and returns the element at the specified index, shifting subsequent elements to the left.
      * @param index the index of the element to remove
      * @return the removed element
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index >= size)
+     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
      */
     @Override
     public J remove(int index){
@@ -129,7 +131,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         for (int i = index; i < size - 1; i++){
             data[i] = data[i+1];
         }
-        data[size - 1] = null; // Optional: clear the last element
+        data[size - 1] = null; // clear the last element
         size--;
         return removedValue;
     }
@@ -188,7 +190,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
     * @param other the DynamicArray to insert
      * @param index the index at which to insert the other array
      * @return a new DynamicArray with the inserted elements
-     * @throws IndexOutOfBoundsException if the index is out of range (index < 0 || index > size)
+     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
      */
     @Override
     public DynamicArray<J> insert(DynamicArrayADT<J> other, int index){
@@ -227,6 +229,15 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         return newArray;
     }
 
+    /**
+     * Extracts a subarray from this DynamicArray within the given index range,
+     * removes those elements from the original array, and returns them as a new DynamicArray.
+     * @param fromIndex the starting index of the range (inclusive)
+     * @param toIndex   the ending index of the range (exclusive)
+     * @return a new DynamicArray containing the extracted elements
+     * @throws IndexOutOfBoundsException if fromIndex is negative, toIndex is greater than size,
+     *                                   or fromIndex is greater than or equal to toIndex
+     */
     @Override 
     public DynamicArray<J> extract(int fromIndex, int toIndex){
         if (fromIndex < 0 || toIndex > size || fromIndex >= toIndex){
@@ -248,16 +259,31 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         return newArray;
     }
 
+    /**
+    * Returns the lowest valid index of this DynamicArray.
+    *
+    * @return returns the lowest index, usually 0
+    */
     @Override
     public int lowIndex() {
         return 0;
     }
 
+
+    /**
+     * Returns the highest valid index of this DynamicArray.
+     * @return returns the highest index, usually one less than the total size
+     */
     @Override
     public int highIndex() {
         return size - 1;
     }
 
+    /**
+     * Checks if a given index is within the valid range of this DynamicArray.
+     * @param index the index to check
+     * @return returns true if the index is valid, false otherwise
+     */
     @Override
     public boolean indexInRange(int index){
         return index >= lowIndex() && index <= highIndex();
