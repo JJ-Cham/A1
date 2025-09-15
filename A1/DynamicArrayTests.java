@@ -1,6 +1,5 @@
 import org.junit.Before;
 import org.junit.Test;
-//import org.junit.jupiter.api.Test;
 import static org.junit.Assert.*;
 
 import java.beans.Transient;
@@ -205,7 +204,7 @@ public class DynamicArrayTests {
     }
 
     @Test 
-    public void testInsertArray(){
+    public void testInsert(){
         DynamicArray<String> arr1 = new DynamicArray<String>(2);
         arr1.add("hi");
         arr1.add("bye");
@@ -214,7 +213,7 @@ public class DynamicArrayTests {
         arr2.add("soul");
         arr2.add("mate");
 
-        arr1.insertArray(1, arr2); // array is now [hi, soul, mate, bye]
+        arr1.insert(arr2, 1); // array is now [hi, soul, mate, bye]
         assertEquals(4, arr1.size());
         assertEquals("soul", arr1.get(1));
         assertEquals("mate", arr1.get(2));
@@ -270,14 +269,15 @@ public class DynamicArrayTests {
     @Test
     public void testIndexInfo(){
         DynamicArray<String> arr = new DynamicArray<>(3);
-        arr.add(1);
-        arr.add(2);
+        arr.add("1");
+        arr.add("2");
 
         assertEquals(0, arr.lowIndex());
         assertEquals(1, arr.highIndex());
         assertTrue(arr.indexInRange(1));
         assertFalse(arr.indexInRange(2));
     }
+}
 
 
 
