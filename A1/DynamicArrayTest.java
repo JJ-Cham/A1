@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
  * Unit tests for the DynamicArray class.
  * Each test uses fresh instances to avoid shared state issues.
  */
-public class DynamicArrayTests {
+public class DynamicArrayTest {
 
     // Helper: builds array from string
     public DynamicArray<Character> stringToArray(String s) {
