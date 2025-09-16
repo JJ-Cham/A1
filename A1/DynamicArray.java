@@ -193,7 +193,7 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
      * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
      */
     @Override
-    public DynamicArray<J> insert(DynamicArrayADT<J> other, int index){
+    public DynamicArray<J> insert(int index, DynamicArrayADT<J> other){
         if (index < 0 || index > size){
             throw new IndexOutOfBoundsException("Index:"+ index + "is out of bounds.");
         }
@@ -258,6 +258,41 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         size -= numToRemove;
         return newArray;
     }
+
+    @Override
+    public DynamicArrayADT<J> splitSuffix(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Invalid index.");
+        }
+        DynamicArray<J> suffix = new DynamicArray<>(size - index);
+        for (int i = index; i < size; i++) {
+            suffix.add(data[i]);
+            data[i] = null;
+        }
+        size = index;  // keep only prefix
+        return suffix;
+    }
+
+    @Override
+    public DynamicArrayADT<J> splitPrefix(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Invalid index.");
+        }
+        DynamicArray<J> prefix = new DynamicArray<>(index);
+        for (int i = 0; i < index; i++) {
+            prefix.add(data[i]);
+        }
+        // shift remaining elements
+        for (int i = index; i < size; i++) {
+            data[i - index] = data[i];
+        }
+        for (int i = size - index; i < size; i++) {
+            data[i] = null;
+        }
+        size -= index;
+        return prefix;
+    }
+
 
     /**
     * Returns the lowest valid index of this DynamicArray.

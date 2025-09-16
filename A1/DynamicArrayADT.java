@@ -74,7 +74,7 @@ public interface DynamicArrayADT<J>{
      * @param index the position to insert the other DynamicArray
      * @return returns new DynamicArray that is this one with other inserted at index
      */
-    DynamicArrayADT<J> insert(DynamicArrayADT<J> other, int index); 
+    DynamicArrayADT<J> insert(int index, DynamicArrayADT<J> other); 
 
     /**
      * Returns a sublist/copy of this DynamicArray from start, [fromIndex, to end toIndex) (exclusive).
