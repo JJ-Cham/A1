@@ -103,7 +103,20 @@ public interface DynamicArrayADT<J>{
      */
     DynamicArrayADT<J> extract(int fromIndex, int toIndex);
 
+    /**
+     * Returns a new DynamicArray containing the elements from the start of this array up to (but not including) index.
+     * @param index the position to split at
+     * @return returns a new DynamicArray with the prefix elements
+     * @throws ArrayIndexOutOfBoundsException if index is invalid
+     */
     DynamicArrayADT<J> splitPrefix(int index);
+
+    /**
+     * Returns a new DynamicArray containing the elements from index to the end of this array.
+     * @param index the position to split at
+     * @return returns a new DynamicArray with the suffix elements
+     * @throws ArrayIndexOutOfBoundsException if index is invalid
+     */
     DynamicArrayADT<J> splitSuffix(int index);
 
 
