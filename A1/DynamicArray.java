@@ -1,15 +1,42 @@
 
 /**
  * A simple implementation of a dynamic array.
+ * @param <J> the type of elements stored in the array
  */
 public class DynamicArray<J> implements DynamicArrayADT<J> {
     private J[] data;
     private int size;
 
     /**
-     * Doubles the capacity of the internal array when full.
+     * Constructs an empty DynamicArray with the specified initial capacity.
+     * @param initialCapacity the initial capacity of the array
+     * @throws ArrayIndexOutOfBoundsException if initialCapacity is negative
      */
-    //@SuppressWarnings("unchecked")
+    public DynamicArray(int initialCapacity) {
+        if (initialCapacity < 0) {
+            throw new ArrayIndexOutOfBoundsException("Initial capacity cannot be negative.");
+        }
+        data = allocate(initialCapacity);
+        size = 0;
+    }
+
+    /**
+     * Constructs a DynamicArray as a deep copy of another DynamicArray.
+     * @param other the DynamicArray to copy
+     */
+    public DynamicArray(DynamicArray<J> other) {
+        data = allocate(other.data.length);
+        size = other.size;
+        for (int i = 0; i < size; i++) {
+            data[i] = other.data[i];
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private J[] allocate(int len) {
+        return (J[]) new Object[len];
+    }
+
     private void resize() {
         int newCapacity = data.length == 0 ? 1 : data.length * 2;
         J[] newData = allocate(newCapacity);
@@ -19,136 +46,68 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         data = newData;
     }
 
-    /**
-     * Allocates a new array of the given length.
-     * @param len the length of the new array
-     * @return the new array
-     */
-    @SuppressWarnings("unchecked")
-    private J[] allocate(int len) {
-        return (J[]) new Object[len];
-    }
-
-    /**
-     * Constructs an empty DynamicArray with the specified initial capacity.
-     * @param initialCapacity the initial capacity of the array
-     * @throws IllegalArgumentException if initialCapacity is negative
-     */
-    public DynamicArray(int initialCapacity){
-        data = allocate(initialCapacity);
-        size = 0;
-    }
-
-    /**
-     * Constructs a DynamicArray as a copy of another DynamicArray.
-     * @param other the DynamicArray to copy
-     */
-    public DynamicArray(DynamicArray<J> other){
-        data = allocate(other.data.length);
-        size = other.size;
-        for (int i = 0; i < size; i++) {
-            data[i] = other.data[i];
-        }
-    }
-
-    /**
-     * Returns the element at the specified index.
-     * @param index the index of the element to retrieve
-     * @return the element at the specified index
-     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
-     */
     @Override
-    public J get(int index){
-        if (index < 0 || index >= size){
-            throw new IndexOutOfBoundsException("Index:"+ index + "is out of bounds.");
+    public J get(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("Index: " + index + " is out of bounds.");
         }
         return data[index];
     }
 
-    /**
-     * Replaces the element at the specified index with the given value.
-     * @param index the index of the element to replace
-     * @param value the new value to store
-     * @return the previous value at the specified index
-     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
-     */
     @Override
-    public J set(int index, J value){
-        if (index < 0 || index >= size){
-            throw new IndexOutOfBoundsException("Index:"+ index + "is out of bounds.");
+    public J set(int index, J value) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("Index: " + index + " is out of bounds.");
         }
         J oldValue = data[index];
         data[index] = value;
         return oldValue;
     }
 
-    /**
-     * Inserts the specified value at the given index, shifting subsequent elements to the right.
-     * @param index the index at which to insert the value
-     * @param value the value to insert
-     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
-     */
-    @Override 
-    public void add(int index, J value){
-        if (index < 0 || index > size){
-            throw new IndexOutOfBoundsException("Index:"+ index + "is out of bounds.");
+    @Override
+    public void add(int index, J value) {
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException("Index: " + index + " is out of bounds.");
         }
-        if (size == data.length){
+        if (size == data.length) {
             resize();
         }
-        for (int i = size; i > index; i--){
-            data[i] = data[i-1];
+        for (int i = size; i > index; i--) {
+            data[i] = data[i - 1];
         }
         data[index] = value;
         size++;
     }
 
-    /**
-     * Appends the specified value to the end of the array.
-     * @param value the value to append
-     */
     @Override
-    public void add(J value){
-        if (size == data.length){
+    public void add(J value) {
+        if (size == data.length) {
             resize();
         }
         data[size] = value;
         size++;
     }
 
-    /**
-     * Removes and returns the element at the specified index, shifting subsequent elements to the left.
-     * @param index the index of the element to remove
-     * @return the removed element
-     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
-     */
     @Override
-    public J remove(int index){
-        if (index < 0 || index >= size){
-            throw new IndexOutOfBoundsException("Index:"+ index + "is out of bounds.");
+    public J remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new ArrayIndexOutOfBoundsException("Index: " + index + " is out of bounds.");
         }
         J removedValue = data[index];
-        for (int i = index; i < size - 1; i++){
-            data[i] = data[i+1];
+        for (int i = index; i < size - 1; i++) {
+            data[i] = data[i + 1];
         }
-        data[size - 1] = null; // clear the last element
+        data[size - 1] = null;
         size--;
         return removedValue;
     }
 
-    /**
-     * Returns a new DynamicArray with elements from the current array excluding the range [fromIndex, toIndex).
-     * @param fromIndex the starting index of the range to delete (inclusive)
-     * @param toIndex the ending index of the range to delete (exclusive)
-     * @return a new DynamicArray with the specified range removed
-     * @throws IndexOutOfBoundsException if indices are invalid or out of range
-     */
     @Override
     public DynamicArray<J> delete(int fromIndex, int toIndex) {
-        if (fromIndex < 0 || toIndex > size || fromIndex >= toIndex) {
-            throw new IndexOutOfBoundsException("Invalid fromIndex or toIndex.");
+        if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
+            throw new ArrayIndexOutOfBoundsException("Invalid fromIndex or toIndex.");
         }
-        DynamicArray<J> newArray = new DynamicArray<J>(size - (toIndex - fromIndex));
+        DynamicArray<J> newArray = new DynamicArray<>(size - (toIndex - fromIndex));
         for (int i = 0; i < fromIndex; i++) {
             newArray.add(data[i]);
         }
@@ -158,96 +117,57 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         return newArray;
     }
 
-    /**
-     * Returns the number of elements currently stored in the array.
-     * @return the size of the array
-     */
     @Override
-    public int size(){
-        return size;
-    }
-
-    /**
-     * Returns a new DynamicArray that is the result of appending another DynamicArray to the current one.
-     * @param other the DynamicArray to append
-     * @return a new DynamicArray containing all elements from both arrays
-     */
-    @Override
-    public DynamicArray<J> append(DynamicArrayADT<J> other){
-        DynamicArray<J> newArray = new DynamicArray<J>(this.size + other.size());
-        for (int i = 0; i < this.size; i++){
+    public DynamicArray<J> append(DynamicArrayADT<J> other) {
+        DynamicArray<J> newArray = new DynamicArray<>(this.size + other.size());
+        for (int i = 0; i < this.size; i++) {
             newArray.add(this.data[i]);
         }
-        for (int i = 0; i < other.size(); i++){
+        for (int i = 0; i < other.size(); i++) {
             newArray.add(other.get(i));
         }
         return newArray;
     }
 
-
-    /**
-     * Returns a new DynamicArray with the elements of another array inserted at the specified index.
-    * @param other the DynamicArray to insert
-     * @param index the index at which to insert the other array
-     * @return a new DynamicArray with the inserted elements
-     * @throws IndexOutOfBoundsException if the index is out of range where it's lees than zero or greater than the size of the array.
-     */
     @Override
-    public DynamicArray<J> insert(int index, DynamicArrayADT<J> other){
-        if (index < 0 || index > size){
-            throw new IndexOutOfBoundsException("Index:"+ index + "is out of bounds.");
+    public DynamicArray<J> insert(int index, DynamicArrayADT<J> other) {
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException("Index: " + index + " is out of bounds.");
         }
-        DynamicArray<J> newArray = new DynamicArray<J>(this.size + other.size());
-        for (int i = 0; i < index; i++){
+        DynamicArray<J> newArray = new DynamicArray<>(this.size + other.size());
+        for (int i = 0; i < index; i++) {
             newArray.add(this.data[i]);
         }
-        for (int i = 0; i < other.size(); i++){
+        for (int i = 0; i < other.size(); i++) {
             newArray.add(other.get(i));
         }
-        for (int i = index; i < this.size; i++){
+        for (int i = index; i < this.size; i++) {
             newArray.add(this.data[i]);
         }
         return newArray;
     }
 
-    /**
-     * Returns a new DynamicArray containing elements in the range [fromIndex, toIndex).
-     * @param fromIndex the starting index (inclusive)
-     * @param toIndex the ending index (exclusive)
-     * @return a new DynamicArray with the specified sublist
-     * @throws IndexOutOfBoundsException if indices are invalid or out of range
-     */
     @Override
-    public DynamicArray<J> sublist(int fromIndex, int toIndex){
-        if (fromIndex < 0 || toIndex > size || fromIndex >= toIndex){
-            throw new IndexOutOfBoundsException("Invalid fromIndex or toIndex.");
+    public DynamicArray<J> sublist(int fromIndex, int toIndex) {
+        if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
+            throw new ArrayIndexOutOfBoundsException("Invalid fromIndex or toIndex.");
         }
-        DynamicArray<J> newArray = new DynamicArray<J>(toIndex - fromIndex);
-        for (int i = fromIndex; i < toIndex; i++){
+        DynamicArray<J> newArray = new DynamicArray<>(toIndex - fromIndex);
+        for (int i = fromIndex; i < toIndex; i++) {
             newArray.add(this.data[i]);
         }
         return newArray;
     }
 
-    /**
-     * Extracts a subarray from this DynamicArray within the given index range,
-     * removes those elements from the original array, and returns them as a new DynamicArray.
-     * @param fromIndex the starting index of the range (inclusive)
-     * @param toIndex   the ending index of the range (exclusive)
-     * @return a new DynamicArray containing the extracted elements
-     * @throws IndexOutOfBoundsException if fromIndex is negative, toIndex is greater than size,
-     *                                   or fromIndex is greater than or equal to toIndex
-     */
-    @Override 
-    public DynamicArray<J> extract(int fromIndex, int toIndex){
-        if (fromIndex < 0 || toIndex > size || fromIndex >= toIndex){
-            throw new IndexOutOfBoundsException("Invalid fromIndex or toIndex.");
+    @Override
+    public DynamicArray<J> extract(int fromIndex, int toIndex) {
+        if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
+            throw new ArrayIndexOutOfBoundsException("Invalid fromIndex or toIndex.");
         }
-        DynamicArray<J> newArray = new DynamicArray<J>(toIndex - fromIndex);
-        for (int i = fromIndex; i < toIndex; i++){
+        DynamicArray<J> newArray = new DynamicArray<>(toIndex - fromIndex);
+        for (int i = fromIndex; i < toIndex; i++) {
             newArray.add(this.data[i]);
         }
-        // Remove the extracted elements from the original array
         int numToRemove = toIndex - fromIndex;
         for (int i = fromIndex; i < size - numToRemove; i++) {
             data[i] = data[i + numToRemove];
@@ -260,29 +180,14 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
     }
 
     @Override
-    public DynamicArrayADT<J> splitSuffix(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Invalid index.");
-        }
-        DynamicArray<J> suffix = new DynamicArray<>(size - index);
-        for (int i = index; i < size; i++) {
-            suffix.add(data[i]);
-            data[i] = null;
-        }
-        size = index;  // keep only prefix
-        return suffix;
-    }
-
-    @Override
     public DynamicArrayADT<J> splitPrefix(int index) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Invalid index.");
+            throw new ArrayIndexOutOfBoundsException("Invalid index.");
         }
         DynamicArray<J> prefix = new DynamicArray<>(index);
         for (int i = 0; i < index; i++) {
             prefix.add(data[i]);
         }
-        // shift remaining elements
         for (int i = index; i < size; i++) {
             data[i - index] = data[i];
         }
@@ -293,109 +198,48 @@ public class DynamicArray<J> implements DynamicArrayADT<J> {
         return prefix;
     }
 
+    @Override
+    public DynamicArrayADT<J> splitSuffix(int index) {
+        if (index < 0 || index > size) {
+            throw new ArrayIndexOutOfBoundsException("Invalid index.");
+        }
+        DynamicArray<J> suffix = new DynamicArray<>(size - index);
+        for (int i = index; i < size; i++) {
+            suffix.add(data[i]);
+            data[i] = null;
+        }
+        size = index;
+        return suffix;
+    }
 
-    /**
-    * Returns the lowest valid index of this DynamicArray.
-    *
-    * @return returns the lowest index, usually 0
-    */
+    @Override
+    public int size() {
+        return size;
+    }
+
     @Override
     public int lowIndex() {
         return 0;
     }
 
-
-    /**
-     * Returns the highest valid index of this DynamicArray.
-     * @return returns the highest index, usually one less than the total size
-     */
     @Override
     public int highIndex() {
         return size - 1;
     }
 
-    /**
-     * Checks if a given index is within the valid range of this DynamicArray.
-     * @param index the index to check
-     * @return returns true if the index is valid, false otherwise
-     */
     @Override
-    public boolean indexInRange(int index){
+    public boolean indexInRange(int index) {
         return index >= lowIndex() && index <= highIndex();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < size; i++) {
+            sb.append(data[i]);
+            if (i < size - 1) sb.append(", ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

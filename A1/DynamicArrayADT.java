@@ -11,7 +11,7 @@ public interface DynamicArrayADT<J>{
      * Returns the element stored at a given index.
      * @param index the position
      * @return returns the element
-     * @throws IndexOutOfBoundsException if index is invalid
+     * @throws ArrayIndexOutOfBoundsException if index is invalid
      */
     J get(int index);
 
@@ -21,7 +21,7 @@ public interface DynamicArrayADT<J>{
      * @param index the position of the element
      * @param value the new value
      * @return returns the old value at that index (null if previously unset)
-     * @throws IndexOutOfBoundsException if index is invalid
+     * @throws ArrayIndexOutOfBoundsException if index is invalid
      */
     J set(int index, J value);
 
@@ -38,7 +38,7 @@ public interface DynamicArrayADT<J>{
      * This adds elements into the specfific index, moving the rest of the elements to the right.
      * @param index the position to add the element
      * @param value element to add
-     * @throws IndexOutOfBoundsException if index is invalid
+     * @throws ArrayIndexOutOfBoundsException if index is invalid
      */
 
     void add(int index, J value); 
@@ -55,7 +55,7 @@ public interface DynamicArrayADT<J>{
      * This removes the element at the specified index, shifting subsequent elements left.
      * @param index the position of the element to remove
      * @return returns the removed element
-     * @throws IndexOutOfBoundsException if index is invalid
+     * @throws ArrayIndexOutOfBoundsException if index is invalid
      */
     J remove(int index); //removes the element at the index and shifts everything to the left
 
@@ -81,7 +81,7 @@ public interface DynamicArrayADT<J>{
      * @param fromIndex, inclusive start
      * @param toIndex, exclusive end
      * @return returns a new DynamicArray that is a copy of the elements from fromIndex to toIndex-1
-     * @throws IndexOutOfBoundsException if either index is invalid
+     * @throws ArrayIndexOutOfBoundsException if either index is invalid
      */
     DynamicArrayADT<J> sublist(int fromIndex, int toIndex); 
 
@@ -90,7 +90,7 @@ public interface DynamicArrayADT<J>{
      * @param fromIndex, inclusive start
      * @param toIndex, exclusive end
      * @return returns a new DynamicArray with that specific range removed
-     * @throws IndexOutOfBoundsException if either index is invalid
+     * @throws ArrayIndexOutOfBoundsException if either index is invalid
      */
     DynamicArrayADT<J> delete(int fromIndex, int toIndex); 
 
@@ -99,9 +99,13 @@ public interface DynamicArrayADT<J>{
      * @param fromIndex, inclusive start
      * @param toIndex, exclusive end
      * @return returns a new DynamicArray with that range extracted
-     * @throws IndexOutOfBoundsException if either index is invalid
+     * @throws ArrayIndexOutOfBoundsException if either index is invalid
      */
     DynamicArrayADT<J> extract(int fromIndex, int toIndex);
+
+    DynamicArrayADT<J> splitPrefix(int index);
+    DynamicArrayADT<J> splitSuffix(int index);
+
 
     //Kudos-Group 4
 
